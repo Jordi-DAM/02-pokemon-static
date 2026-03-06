@@ -3,16 +3,16 @@ import "../../styles/global.css";
 
 import type { GetStaticPaths } from "astro";
 
-import PokemonCard from "../../components/pokemons/PokemonCard.astro";
-import MainLayout from "../../layouts/MainLayout.astro";
-import type { PokemonListResponse } from "../../interfaces/pokemon-list.response";
+import PokemonCard from "@components/pokemons/PokemonCard.astro";
+import MainLayout from "@layouts/MainLayout.astro";
+import type { PokemonListResponse } from "@interfaces/pokemon-list.response";
 
 interface Props {
   url: string;
   name: string;
 }
 
-export const getStaticPaths = async () => {
+export const getStaticPaths = (async () => {
   const resp = await fetch("https://pokeapi.co/api/v2/pokemon?limit=151");
 
   const { results } = (await resp.json()) as PokemonListResponse;
@@ -26,7 +26,7 @@ export const getStaticPaths = async () => {
       props: { name: name, url: url },
     };
   });
-};
+}) satisfies GetStaticPaths;
 
 const { pokemonId } = Astro.params;
 const { name } = Astro.props;
